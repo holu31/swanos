@@ -29,6 +29,7 @@ void syscall_init() {
 }
 
 #define SC_CODE_puts            0
+#define SC_CODE_setcolor        0
 #define SC_CODE_getscancode     1
 #define SC_CODE_getchar         2
 #define SC_CODE_gets            3
@@ -46,6 +47,9 @@ void syscall_handler(struct regs *r) {
         case SC_CODE_puts:
             tty_printf("%s", (char*) (argptr[0]));
             r->edx = 100;
+            break;
+        case SC_CODE_setcolor:
+            tty_setcolor((int)argptr[0]);
             break;
         case SC_CODE_getscancode:
             r->edx = (uint32_t)keyboard_getscancode();
