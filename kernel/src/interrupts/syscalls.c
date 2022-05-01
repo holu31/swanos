@@ -28,13 +28,13 @@ void syscall_init() {
     qemu_putstring("SYSCALL INIT\n");
 }
 
-#define SC_CODE_puts            0
-#define SC_CODE_setcolor        0
-#define SC_CODE_getscancode     1
-#define SC_CODE_getchar         2
-#define SC_CODE_gets            3
-#define SC_CODE_malloc          4
-#define SC_CODE_free            5
+#define SC_CODE_puts            10
+#define SC_CODE_setcolor        11
+#define SC_CODE_getscancode     12
+#define SC_CODE_getchar         13
+#define SC_CODE_gets            14
+#define SC_CODE_malloc          15
+#define SC_CODE_free            16
 #define SC_CODE_putpixel        32
 #define SC_CODE_drawline        33
 #define SC_CODE_version         40
@@ -50,6 +50,7 @@ void syscall_handler(struct regs *r) {
             break;
         case SC_CODE_setcolor:
             tty_setcolor((int)argptr[0]);
+            r->edx = 100;
             break;
         case SC_CODE_getscancode:
             r->edx = (uint32_t)keyboard_getscancode();
