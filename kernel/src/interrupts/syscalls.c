@@ -8,12 +8,9 @@ void syscall_init() {
 
 
 void syscall_handler(struct regs *r) {
-    uint32_t* argptr = (uint32_t*) (r->ebx);
-   
-
     switch (r->eax) {
         case SC_CODE_puts:
-            tty_printf("%s", (char*) (argptr[0]));
+            tty_printf("%s", (char*) ((uint32_t*)(r->ebx)));
             r->edx = (uint32_t)1;
             break;
         case SC_CODE_getscancode:
@@ -26,18 +23,18 @@ void syscall_handler(struct regs *r) {
             r->edx = (uint32_t)keyboard_gets();
             break;
         case SC_CODE_malloc:
-            r->edx = (uint32_t)kheap_malloc((int)argptr[0]);
+            r->edx = (uint32_t)kheap_malloc((int)(r->ebx));
             break;
         case SC_CODE_free:
-            kheap_free((void*)argptr[0]);
+            kheap_free((void*)(r->ebx));
             r->edx = (uint32_t)1;
             break;
         case SC_CODE_putpixel:
-            set_pixel((int) (argptr[0]), (int) (argptr[1]), (uint32_t)(argptr[2]));
+            set_pixel((int) ((uint32_t*) (r->ebx)), (int) ((uint32_t*) (r->ecx)), (uint32_t)((uint32_t*) (r->edx)));
             r->edx = (uint32_t)1;
             break;
         case SC_CODE_drawline:
-            set_line((int) (argptr[0]), (int) (argptr[1]),(int) (argptr[2]), (int) (argptr[3]), (uint32_t) (argptr[4]));
+            set_line((int) ((uint32_t*) (r->ebx)), (int) ((uint32_t*) (r->ecx)),(int) ((uint32_t*) (r->edx)), (int) ((uint32_t*) (r->esp)), (uint32_t) ((uint32_t*) (r->ebp)));
             r->edx = (uint32_t)1;
             break;
         case SC_CODE_version:
