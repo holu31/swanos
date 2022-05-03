@@ -1,33 +1,32 @@
 
 #include <kernel.h>
 
-// Returns 0 if header is valid, 1 if magic number invalid, 2 and more if file isn't compatible
 uint8_t elf_check_header(struct elf_hdr *hdr) {
     if (hdr->mag_num[0] != 0x7f || 
         hdr->mag_num[1] != 'E' || 
         hdr->mag_num[2] != 'L' || 
         hdr->mag_num[3] != 'F') {
-        return 1; // Our magic number isn't valid
+        return 1; 
     }
     if (hdr->arch != ELF_ARCH_32BIT) {
-        return 2; // This ELF file can't be loaded because it's not 32-bit
+        return 2;
     }
     if (hdr->byte_order != ELF_BYTEORDER_LENDIAN) {
-        return 3; // This ELF file can't be loaded because it's not little-endian
+        return 3;
     }
     if (hdr->elf_ver != 1) {
-        return 4; // This ELF file can't be loaded because its version isn't 1
+        return 4; 
     }
     if (hdr->file_type != ELF_REL && hdr->file_type != ELF_EXEC) {
-        return 5; // This ELF file can't be loaded because it's neither executable nor relocatable file
+        return 5; 
     }
     if (hdr->machine!=ELF_386_MACHINE) {
-        return 6; // This ELF file can't be loaded because it's not for i386 platform
+        return 6; 
     }
     return 0;
 }
 
-void *elf_open(const char *fname) { // Returns pointer to ELF file.
+void *elf_open(const char *fname){
     if (!vfs_exists(fname)) {
         tty_printf("elf_open: elf [%s] does not exist\n", fname);
         qemu_printf("elf_open: elf [%s] does not exist\n", fname);
@@ -37,6 +36,9 @@ void *elf_open(const char *fname) { // Returns pointer to ELF file.
     uint32_t fsize = vfs_get_size(fname);
     void *addr = kheap_malloc(fsize);
     int res = vfs_read(fname, 0, fsize, addr);
+    
+    qemu_printf("elf_open res = %d\n", res);
+
     struct elf_hdr *hdr = addr;
 
 
@@ -115,7 +117,7 @@ void elf_info(const char *name) {
     if (!vfs_exists(name)) {
         tty_printf("\nelf_info: elf [%s] does not exist\n", name);
         qemu_printf("\nelf_info: elf [%s] does not exist\n", name);
-        return 0;
+        return;
     }
     void *elf_file = elf_open(name);
     tty_printf("pointer to this elf_file = %x\n", elf_file);
@@ -191,7 +193,7 @@ int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unus
     
     int code = entry_point();
 
-    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>\n", code);
+    tty_printf("\n[PROGRAMM FINISHED WITH CODE <%d>]\n", code);
     qemu_printf("\n[PROGRAMM FINISHED WITH CODE <%d>\n", code);
     qemu_printf("\nCleaning VMM:\n");
 
@@ -199,7 +201,7 @@ int run_elf_file(const char *name/*, char **argv, char **env __attribute__((unus
         qemu_printf("\tCleaning %d: %x\n", i, vmm_alloced[i]);
         vmm_free_page(vmm_alloced[i]);
     }
-    tty_printf("\n[CLEANED <%d> PAGES\n", ptr_vmm_alloced);
+    qemu_printf("\n[CLEANED <%d> PAGES]\n", ptr_vmm_alloced);
 
     return 0;
 }

@@ -18,7 +18,7 @@ uint16_t vga_entry(uint8_t c, uint8_t tty_color) {
     return (uint16_t) c | (uint16_t) tty_color << 8;
 }
 
-void tty_setcolor(int color){
+void tty_setcolor(int color) {
     tty_text_color = color;
 }
 
@@ -32,14 +32,15 @@ void init_vbe(multiboot_info *mboot) {
     framebuffer_height = svga_mode->screen_height;
     framebuffer_size = framebuffer_height * framebuffer_pitch;
 
-    physical_addr frame;
+    physical_addres frame;
     virtual_addr virt;
-    for (frame = framebuffer_addr, virt = framebuffer_addr;
-         frame < (framebuffer_addr + framebuffer_size/*0x00400000*//*0x002C0000 0x000F0000*/);
-         frame += PAGE_SIZE, virt += PAGE_SIZE) {
+
+    for (frame = (physical_addres)framebuffer_addr, virt = (virtual_addr)framebuffer_addr;
+        frame < (physical_addres)(framebuffer_addr + framebuffer_size);
+        frame += PAGE_SIZE, virt += PAGE_SIZE) {
         vmm_map_page(frame, virt);
     }
-    qemu_putstring("VBE create_back_framebuffer\n");
+    qemu_printf("VBE create_back_framebuffer\n");
 
     create_back_framebuffer();
 }

@@ -109,7 +109,6 @@ void keyboard_install(void) {
 void keyboard_handler_main(void) {
 
     unsigned char status;
-    char res[32];
 
     // Запись EOI 
     outb(0x20, 0x20);
@@ -119,7 +118,6 @@ void keyboard_handler_main(void) {
     // Проверяем статус используя нижний бит
     if (status & 0x01) {
         keycode = inb(KEYBOARD_DATA_PORT);
-        //qemu_printf("KEY %d\n", keycode);
 
         if (input_type == 0) {
             return;
@@ -224,9 +222,7 @@ void keyboard_handler_main(void) {
 int keyboard_getchar() {
     input_type = 2;
 
-    while (input_type != -2) {
-        keyboard_handler_main();
-    }
+    keyboard_handler_main();
 
     input_type = 1;
     tty_putchar(last_char);
@@ -237,9 +233,7 @@ int keyboard_getchar() {
 int keyboard_getscancode() {
     input_type = 2;
 
-    while (input_type != -2) {
-        keyboard_handler_main();
-    }
+    keyboard_handler_main();
 
     input_type = 1;
     

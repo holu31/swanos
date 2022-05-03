@@ -130,9 +130,9 @@ void initrd_list(int argc, char **arg) {
         ustar_file_t *file = (struct ustar_file_t*) addr;
 
         if (file->type == USTAR_DIRECTORY) {
-            tty_printf("\n    <dir>       /initrd/%s", file->fname);
+            tty_printf("\n    <dir>       /rd/%s", file->fname);
         } else if (file->type == USTAR_NORMAL_FILE) {
-            tty_printf("\n    <file> %d   /initrd/%s ", filesize, file->fname);
+            tty_printf("\n    <file> %d   /rd/%s ", filesize, file->fname);
         }
         addr += (((filesize + 511) / 512) + 1) * 512;
         
@@ -158,7 +158,7 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     initrd_size = phys_end - phys_begin;
     initrd_begin = kheap_malloc(initrd_size + 4 * PAGE_SIZE);
 
-    physical_addr frame;
+    physical_addres frame;
     virtual_addr virt;
     for (frame = PAGE_ALIGN_DOWN(phys_begin), virt = PAGE_ALIGN_DOWN(initrd_begin) + PAGE_SIZE;
          frame <= (PAGE_ALIGN_DOWN(phys_end));
@@ -168,26 +168,21 @@ void initrd_init(uint32_t phys_begin, uint32_t phys_end) {
     initrd_begin = PAGE_ALIGN_DOWN(initrd_begin) + PAGE_SIZE + phys_begin % PAGE_SIZE;
     initrd_end = initrd_begin + initrd_size;
 
-    //int i;
-    //for (i = 0; i < 100; i++) tty_printf("%c", *(char*) (initrd_begin + i));
-
-    //uint32_t v1 = vmm_temp_map_page(phys_begin);
-    //for (i = 0; i < 4096; i++) tty_printf("%c", *(char*) (v1 + i));
-
     vfs_storage_dev_t *dev = kheap_malloc(sizeof(vfs_storage_dev_t));
     dev->type = 4;
-    strcpy(dev->name, "initrd");
+    strcpy(dev->name, "rd");
 
     vfs_filesystem_handles_t *fs_handles = kheap_malloc(sizeof(vfs_filesystem_handles_t));
+
     fs_handles->read = &initrd_read;
     fs_handles->exists = &initrd_file_exists;
     fs_handles->get_size = &initrd_get_filesize;
-    fs_handles->is_dir = &initrd_is_dir;
+    fs_handles->is_dir = (uint32_t*)&initrd_is_dir;
     fs_handles->write = 0;
     fs_handles->readdir = 0;
     fs_handles->mkfile = 0;
     fs_handles->mkdir = 0;
     fs_handles->rm = 0;
 
-    vfs_mount(dev, fs_handles, 0, "/initrd/", 0);
+    vfs_mount(dev, fs_handles, 0, "/rd/", 0);
 }
