@@ -81,10 +81,10 @@ if __name__ == "__main__":
 
         
         if sys.platform == "linux" or sys.platform == "linux2":
-            os.system("""grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS""")
+            os.system("""grub-mkrescue -o "SwanOS.iso" isodir/ -V SwanOS""")
         else:
-            os.system("""wsl grub-mkrescue -o "SynapseOS.iso" isodir/ -V SynapseOS """)
+            os.system("""wsl grub-mkrescue -o "Swan.iso" isodir/ -V SwanOS """)
 
-        os.system("qemu-system-i386 -m 16 -name SynapseOS -soundhw all -cdrom SynapseOS.iso -fdb fdb.img -hda ata.qcow2 -serial  file:Qemu.log -no-reboot")
+        os.system("qemu-system-i386 -m 16 -name SwanOS -soundhw all -cdrom SwanOS.iso -fdb fdb.img -hda ata.qcow2 -serial  file:Qemu.log -no-reboot")
     except Exception as E:
         print(E)
