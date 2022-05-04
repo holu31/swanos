@@ -34,7 +34,7 @@ void syscall_handler(struct regs *r) {
             r->edx = (uint32_t)1;
             break;
         case SC_CODE_drawline:
-            set_line((int) ((uint32_t*) (r->ebx)), (int) ((uint32_t*) (r->ecx)),(int) ((uint32_t*) (r->edx)), (int) ((uint32_t*) (r->esp)), (uint32_t) ((uint32_t*) (r->ebp)));
+            set_line((int) ((uint32_t*) (r->ebx)), (int) ((uint32_t*) (r->ecx)),(int) ((uint32_t*) (r->edx)), (int) ((uint32_t*) (r->esi)), (uint32_t) ((uint32_t*) (r->edi)));
             r->edx = (uint32_t)1;
             break;
         case SC_CODE_version:
