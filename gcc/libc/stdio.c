@@ -1,16 +1,9 @@
 #include <stdio.h>
 
-int putchar(char ch){
-    asm volatile("mov $6, %eax");
-    asm volatile("mov %0, %%ebx" :: "b"((int) ch) : "%eax");
+int puts(char *ch){
+    asm volatile("mov $0, %eax");
+    asm volatile("mov %0, %%ebx" :: "b"(ch) : "%eax");
     asm volatile("int $0x80");
-    return 0;
-}
-
-int puts(char *str){
-    for(int i=0; str[i] != '\0'; i++){
-        putchar(str[i]);
-    }
     return 0;
 }
 
