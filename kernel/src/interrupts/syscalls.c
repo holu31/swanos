@@ -29,6 +29,10 @@ void syscall_handler(struct regs *r) {
             kheap_free((void*)(r->ebx));
             r->edx = (uint32_t)1;
             break;
+        case SC_CODE_putchar:
+            tty_putchar((char) ((uint32_t*)(r->ebx)));
+            r->edx = (uint32_t)1;
+            break;
         case SC_CODE_putpixel:
             set_pixel((int) ((uint32_t*) (r->ebx)), (int) ((uint32_t*) (r->ecx)), (uint32_t)((uint32_t*) (r->edx)));
             r->edx = (uint32_t)1;
