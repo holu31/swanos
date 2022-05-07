@@ -1,6 +1,8 @@
 #pragma once
+#include <stddef.h>
+#include <stdint.h>
+#include <stdarg.h>
 
-int putchar(char ch);
 int puts(char *str);
 int getscancode();
 char getchar();
