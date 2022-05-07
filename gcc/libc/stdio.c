@@ -12,7 +12,7 @@ int getscancode(){
 
     asm volatile("mov %%eax, %0" :: "a"(1));
     asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("mov %%eax, %0" : "=a"(result));
 
     return result;
 }
@@ -22,7 +22,7 @@ char getchar(){
 
     asm volatile("mov %%eax, %0" :: "a"(2));
     asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("mov %%eax, %0" : "=a"(result));
 
     return result;
 } 
@@ -33,7 +33,7 @@ char *gets() {
 
     asm volatile("mov %%eax, %0" :: "a"(3));
     asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("mov %%eax, %0" : "=a"(result));
 
     return result;
 } 
@@ -44,7 +44,7 @@ int getversion(){
 
     asm volatile("mov %%eax, %0" :: "a"(40));
     asm volatile("int $0x80");
-    asm volatile("mov %%edx, %0" : "=a"(result));
+    asm volatile("mov %%eax, %0" : "=a"(result));
 
     return result;
 }
