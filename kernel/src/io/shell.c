@@ -30,6 +30,32 @@ void ksh_main() {
 
         if (strcmp(cmd, "about") == 0) {
             tty_printf("SwanOS open and free x86 operating system written in C.");
+        } else if (strcmp(cmd, "swanfetch") == 0){
+            tty_setcolor(COLOR_SYS_TEXT);
+            tty_printf("                    .~?YPPP5?~:\n");
+            tty_printf("                  ?&@@@@@@@@@@@@G~\n");         
+            tty_printf("                :&@@@#?^.. .:P@@@B5.\tOS: ");
+            tty_setcolor(0xAAAAAA);
+            tty_printf("SwanOS x86_32\n");
+            tty_setcolor(COLOR_SYS_TEXT);              
+            tty_printf("                &@@&:         Y@&?#5\tMemory: ");
+            tty_setcolor(0xAAAAAA);   
+            tty_printf("%d MiB / %d MiB\n", kheap_memory_used / (1024 * 1024), phys_installed_memory_size / (1024 * 1024));           
+            tty_setcolor(COLOR_SYS_TEXT);
+            tty_printf("               !@@@!            ^@@&\n");
+            tty_printf("               ~@@@P             7@@\n");                        
+            tty_printf("                B@@@#7.            :\n");              
+            tty_printf("                 5@@@@@@#P?^.\n");                     
+            tty_printf("                  .?B@@@@@@@@&BJ^\n");                 
+            tty_printf("            ~Y7:      .!YB&@@@@@@&?\n");               
+            tty_printf("          ^: .P@@#Y~.       :?G@@@@&.\n");             
+            tty_printf("          .5&#5P@@@@@&BJ!:      5@@@B\n");             
+            tty_printf("         ^5P#@@@@@@@@@@@@@@&P^   &@@@\n");             
+            tty_printf("           ?&@@@@@@@@@@@@@@@@@#: &@@&\n");             
+            tty_printf("             .J&@@@@@@@@@@@@@@@@#@@@~\n");             
+            tty_printf("                G@@@@@@@@@@@@@@@@@@~\n");              
+            tty_printf("                 .Y&@@@@@@@@@@@@#?\n");                
+            tty_printf("                    .:!?Y5P5Y7^.\n");
         } else if (strcmp(cmd, "help") == 0) {
             tty_printf("Commands:\n" \
                         "help                   get list of commands\n" \
