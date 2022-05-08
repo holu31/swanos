@@ -8,6 +8,8 @@ typedef struct __attribute__((packed)) kheap_item {
     unsigned char used;
 } kheap_item;
 
+uint32_t kheap_memory_used; 
+
 void kheap_init();
 
 void *kheap_morecore(uint32_t size);
