@@ -35,7 +35,7 @@
 
 #define VERSION_MAJOR   0   // Версия ядра
 #define VERSION_MINOR   1   // Пре-релиз 
-#define VERSION_PATCH   0   // Патч
+#define VERSION_PATCH   1   // Патч
 
 #define COLOR_TEXT      VESA_LIGHT_GREY
 #define COLOR_SYS_TEXT  VESA_LIGHT_CYAN
