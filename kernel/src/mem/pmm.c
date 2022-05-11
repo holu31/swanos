@@ -53,11 +53,11 @@ void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length
     }
 
     
-    tty_printf("Installed memory size: %d KB", phys_installed_memory_size / 1024);
-    tty_printf(" = %d MB\n", phys_installed_memory_size / (1024 * 1024));
+    qemu_printf("Installed memory size: %d KB", phys_installed_memory_size / 1024);
+    qemu_printf(" = %d MB\n", phys_installed_memory_size / (1024 * 1024));
 
-    tty_printf("Available memory size: %d KB", phys_available_memory_size / 1024);
-    tty_printf(" = %d MB\n", phys_available_memory_size / (1024 * 1024));
+    qemu_printf("Available memory size: %d KB", phys_available_memory_size / 1024);
+    qemu_printf(" = %d MB\n", phys_available_memory_size / (1024 * 1024));
     
     if (phys_available_memory_size / 1024 < 4600) {
         tty_setcolor(COLOR_ERROR);
