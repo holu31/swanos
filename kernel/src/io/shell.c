@@ -62,7 +62,8 @@ void ksh_main() {
                         "cat   <filename>       open file to read\n" \
                         "cd    <folder>         open folder\n" \
                         "./<filename>           run .elf programm in current folder\n" \
-                        "ls                     print list of files\n" 
+                        "ls                     print list of files\n" \
+                        "swanfetch              get system info" 
                         );
         } else if (strlen(cmd) > 4 && strncmp(cmd, "cat ", 4) == 0) {
             char fname[256];
