@@ -1,13 +1,10 @@
-#pragma once
-
+#ifndef _INITRD_H
+#define _INITRD_H
 
 #include <drivers/vfs.h>
 #include <stdbool.h>
 #include <stdint.h>
 
-/*
-    tar-fs из EOS 
-*/
 #define USTAR_NORMAL_FILE      '0'
 #define USTAR_HARD_LINK        '1'
 #define USTAR_SYMBOLIC_LINK    '2'
@@ -44,17 +41,19 @@ typedef struct {
     char reserved[12];
 } __attribute__((packed)) ustar_file_t;
 
-int oct2bin(unsigned char *str, int size);
+int oct2bin(char *str, int size);
 
 unsigned int tar_getsize(const char *in);
-int tar_lookup(unsigned char *archive, char *filename);
+uint8_t* tar_lookup(uint8_t *archive, const char *filename);
 
-uint32_t initrd_read(char *filename, int offset, int size, vfs_filesystem_t *u, void *buffer);
+uint32_t initrd_read(const char *filename, int offset, int size, vfs_filesystem_t *u, void *buffer);
 
-uint32_t initrd_file_exists(char *filename, vfs_filesystem_t *u);
-uint32_t initrd_get_filesize(char *filename);
+uint32_t initrd_file_exists(const char *filename, vfs_filesystem_t *u);
+uint32_t initrd_get_filesize(const char *filename, vfs_filesystem_t* fs);
 
-uint32_t initrd_is_dir(char *filename);
+uint32_t initrd_is_dir(const char *filename, vfs_filesystem_t* fs);
 
 void initrd_list(int argc, char **arg);
 void initrd_init(uint32_t begin, uint32_t end);
+
+#endif // _INITRD_H
