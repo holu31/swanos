@@ -3,4 +3,4 @@ SwanOS - open and free x86 operating system written in C and GAS in the developm
 
 ## Contact Us
 - https://vk.com/swanos
-- swanos_info@gmail.com
+- swanos.info@gmail.com
