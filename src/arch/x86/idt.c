@@ -25,5 +25,5 @@ void idt_init() {
 	memset(&idt_entries, 0, sizeof(struct idt_entry_struct) * 256);
 
 	idt_load(&idt_ptr);
-    cputs("idt load");
+    cputs("idt load\n");
 }
