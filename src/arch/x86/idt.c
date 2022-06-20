@@ -1,6 +1,7 @@
 #include <console.h>
 #include <idt.h>
 #include <string.h>
+#include <kernel.h>
 
 extern void idt_load(struct idt_ptr_struct *idt_ptr_addr);
 
@@ -25,5 +26,5 @@ void idt_init() {
 	memset(&idt_entries, 0, sizeof(struct idt_entry_struct) * 256);
 
 	idt_load(&idt_ptr);
-    cputs("idt load\n");
+    if(DEBUG_MODE) cputs("idt init\n");
 }

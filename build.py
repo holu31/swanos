@@ -1,6 +1,6 @@
 import os, sys
 
-OBJECTS = "bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o"
+OBJECTS = "bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/isr.o bin/irq.o"
 
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/ports.c -o bin/ports.o')
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/console.c -o bin/console.o')
@@ -9,6 +9,10 @@ os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/li
 
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/arch/x86/gdt.c -o bin/gdt.o')
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/arch/x86/idt.c -o bin/idt.o')
+
+os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/interrupts/irq.c -o bin/irq.o')
+os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/interrupts/isr.c -o bin/isr.o')
+os.system('nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o')
 
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o bin/kernel.o')
 

@@ -1,5 +1,6 @@
 #include <gdt.h>
 #include <console.h>
+#include <kernel.h>
 
 struct gdt_entry_struct gdt_entries[6];
 struct gdt_ptr_struct gdt_ptr;
@@ -28,5 +29,5 @@ void gdt_init() {
     gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);     // user mode code segment
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);     // user mode data segment
     gdt_flush(&gdt_ptr);
-    cputs("gdt init\n");
+    if(DEBUG_MODE) cputs("gdt init\n");
 }
