@@ -15,6 +15,7 @@ void kernel_main(struct multiboot_info *mboot_info){
 	irq_init();
 	isrs_init();
 	pmm_init(mboot_info);
+	vmm_init();
 	kheap_init();
 	while(1);
 }
