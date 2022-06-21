@@ -4,9 +4,9 @@ OUTPUT_FORMAT(elf32-i386)
 SECTIONS
 {
     . = 0x00100000;
-    /* The kernel will live at 3GB + 1MB in the virtual address space, */
-    /* which will be mapped to 1MB in the physical address space. */
-    /* Note that we page-align the sections. */
+
+    kernel_virt_start = .;
+    kernel_phys_start = . - 0xC0000000;
 
     _kernel_start = .;
         .multiboot.data : {
@@ -38,5 +38,8 @@ SECTIONS
         *(.bootstrap_stack)
     }
     /* Add a symbol that indicates the end address of the kernel. */
+
     _kernel_end = .;
+    kernel_virt_end = .;
+    kernel_phys_end = . - 0xC0000000;
 }
