@@ -84,7 +84,7 @@ void isrs_init(){
 	idt_set_gate(30, (uint32_t)_isr30, 0x08, 0x8E);
 	idt_set_gate(31, (uint32_t)_isr31, 0x08, 0x8E);
 	idt_set_gate(0x7F, (uint32_t)_isr127, 0x08, 0x8E);
-	if(DEBUG_MODE) cputs("isr init\n");
+	if(DEBUG_MODE) log("isr init\n", true);
 }
 
 void fault_handler(struct regs *r){
@@ -100,7 +100,7 @@ void fault_handler(struct regs *r){
 	if (handler) {
 		handler(r);
 	} else {
-        if(DEBUG_MODE) cputs("error isr");
+        if(DEBUG_MODE) log("error isr", false);
 	}
 	__asm__ __volatile__ ("sti");
 }

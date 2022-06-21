@@ -66,7 +66,7 @@ void irq_gates(){
 void irq_init(){ // setup hardware devices
 	irq_remap();
 	irq_gates();
-    if(DEBUG_MODE) cputs("irq init\n");
+	if(DEBUG_MODE) log("irq init\n", true);
 	__asm__ __volatile__("sti");
 }
 
