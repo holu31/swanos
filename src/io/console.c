@@ -43,3 +43,16 @@ void cputs(char *c){
     for(int i=0; c[i]!='\0';i++)
         cputch(c[i]);
 }
+
+void log(char *str, bool ok){
+    cputs("[");
+    cset_color(COLOR_LIGHT_GREEN, COLOR_BLACK);
+    if(ok) cputs("OK");
+    else {
+        cset_color(COLOR_LIGHT_RED, COLOR_BLACK);
+        cputs("ERR");
+    }
+    cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
+    cputs("] ");
+    cputs(str);
+}
