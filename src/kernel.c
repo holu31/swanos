@@ -4,6 +4,7 @@
 #include <irq.h>
 #include <isr.h>
 #include <kernel.h>
+#include <shell.h>
 
 void kernel_main(){
 	cinit();
@@ -11,5 +12,6 @@ void kernel_main(){
 	idt_init();
 	irq_init();
 	isrs_init();
+	shell_init();
 	while(1);
 }
