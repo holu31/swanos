@@ -1,6 +1,6 @@
 import os, sys
 
-OBJECTS = "bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/isr.o bin/irq.o bin/description_tables.o"
+OBJECTS = "bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/isr.o bin/irq.o bin/keyboard.o bin/description_tables.o"
 
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/ports.c -o bin/ports.o')
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/console.c -o bin/console.o')
@@ -15,7 +15,7 @@ os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/in
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/interrupts/isr.c -o bin/isr.o')
 os.system('nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o')
 
-os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/mm/kheap.c -o bin/kheap.o')
+os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/keyboard.c -o bin/keyboard.o')
 
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o bin/kernel.o')
 
