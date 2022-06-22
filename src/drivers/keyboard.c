@@ -7,7 +7,7 @@ int kb_getkey(){
 }
 
 char kb_getchar(){
-    return kb_sctochar(kb_getkey);
+    return kb_sctochar(kb_getkey());
 }
 
 char kb_sctochar(int scancode){     // scancode to char
