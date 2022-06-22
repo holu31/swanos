@@ -99,55 +99,6 @@ _start:
 
 .section .text
 
-jmp .skip_idt
-
-.global gdt_flush
-.global idt_load
-
-idt_load:
-    mov 4(%esp), %eax
-    lidt (%eax)
-    ret
-
-gdt_flush:
-    cli
-
-    mov 4(%esp), %eax
-    lgdt (%eax)
-
-    mov $0x10, %ax # 0x10 is the offset in the GDT to our data segment 
-    mov %ax, %ds
-    mov %ax, %es
-    mov %ax, %fs
-    mov %ax, %gs
-    mov %ax, %ss
-
-    jmp $0x08, $.flush
-
-.flush:
-    ret # back to c
-
-.global enable_paging
-
-enable_paging:
-    # Переместить каталог в CR3
-    mov 4(%esp), %eax
-    #mov (0x00009000), %eax
-    mov %eax, %cr3
-
-    # Отключаем 4х мегабайтые страницы
-    mov %cr4, %ecx
-    and $~0x00000010, %ecx
-    mov %ecx, %cr4
-
-    # Включаем пейджинг
-    mov %cr0, %eax
-    or $0x80000000, %eax
-    mov %eax, %cr0
-    ret
-    
-.skip_idt:
-
 4:
     # At this point, paging is fully set up and enabled.
 
