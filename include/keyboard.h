@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ISR_H
-#define ISR_H
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 #define KB_DATA_PORT  0x60
 #include <stdint.h>
 
