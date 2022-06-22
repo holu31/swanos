@@ -1,7 +1,7 @@
 #pragma once
 #ifndef KERNEL_H
 #define KERNEL_H
-
+#include <stdint.h>
 #define DEBUG_MODE 1
 #define KERNEL_NAME "SWAN-OS"
 #define KERNEL_VERSION_STRING "0.1.0"
