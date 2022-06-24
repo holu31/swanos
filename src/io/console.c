@@ -44,6 +44,31 @@ void cputs(char *c){
         cputch(c[i]);
 }
 
+void cputint(int i){
+    if(i < 0){
+        i = -i;
+        cputch('-');
+    }
+    char str[255];
+    uint32_t n, d = 1000000000;
+    uint32_t dec_index = 0;
+
+    while((i / d == 0) && (d >= 10)){
+        d /= 10;
+    }
+    n = i;
+
+    while(d >= 10){
+        str[dec_index++] = ((char)((int) '0' + n/d));
+        n = n % d;
+        d /= 10;
+    }
+
+    str[dec_index++] = ((char) ((int) '0' + n));
+    str[dec_index] = 0;
+    cputs(str);
+}
+
 void log(char *str, bool ok){
     cputs("[");
     cset_color(COLOR_LIGHT_GREEN, COLOR_BLACK);
