@@ -2,7 +2,7 @@
 #include <keyboard.h>
 #include <console.h>
 #include <string.h>
-#define SIZE_BUFFER 80
+#define SIZE_BUFFER 77
 
 char buffer_shell[SIZE_BUFFER];
 
@@ -13,6 +13,10 @@ char *get_command(){
     cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
     for(int i=0; i!=sizeof(buffer_shell); i++) buffer_shell[i] = '\0';
     while(kb_sctochar(key) != '\n'){
+        if(strlen(buffer_shell) == SIZE_BUFFER){
+            log("buffer full\n", false);
+            return "";
+        }
         if(kb_sctochar(key) != 0){
             buffer_shell[strlen(buffer_shell)] = kb_sctochar(key);
             cputch(kb_sctochar(key));
