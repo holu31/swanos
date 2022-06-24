@@ -13,7 +13,7 @@ char *get_command(){
     cset_color(COLOR_CYAN, COLOR_BLACK);
     cputs("\n~$ ");
     cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
-    for(int i=0; i!=sizeof(buffer_shell); i++) buffer_shell[i] = '\0'; // clear buffer
+    memset(buffer_shell, 0, SIZE_BUFFER); // clear buffer
     while(kb_sctochar(key) != '\n'){
         if(strlen(buffer_shell) == SIZE_BUFFER){ // checking if the buffer overflows...
             log("buffer full\n", false);         // ...temporary until we write a memory manager
