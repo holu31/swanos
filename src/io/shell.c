@@ -23,7 +23,7 @@ char *get_command(){
 }
 
 void shell_init(){
-    while(1){
+    for(;;){
         char *command = get_command(); // requires a memory manager in order to work properly
         if(strcmp(command, "help")==0){
             cputs("\nhere all commands are output inside in the kernel: \n\
