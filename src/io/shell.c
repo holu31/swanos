@@ -39,7 +39,6 @@ help - all commands are output inside to the kernel\n");
             outb(0x64, 0xFE);
             asm volatile("hlt");
         } else if(strcmp(command, "shutdown")==0){
-            outb(0x64, 0xFE);
             outw(0xB004, 0x2000);
             outw(0x604, 0x2000);
             outw(0x4004, 0x3400);
