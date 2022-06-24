@@ -5,9 +5,6 @@ SECTIONS
 {
     . = 0x00100000;
 
-    kernel_virt_start = .;
-    kernel_phys_start = . - 0xC0000000;
-
     _kernel_start = .;
         .multiboot.data : {
             *(.multiboot.data)
@@ -40,6 +37,4 @@ SECTIONS
     /* Add a symbol that indicates the end address of the kernel. */
 
     _kernel_end = .;
-    kernel_virt_end = .;
-    kernel_phys_end = . - 0xC0000000;
 }
