@@ -12,9 +12,6 @@
 .long FLAGS
 .long CHECKSUM
 
-.set KERNEL_VIRTUAL_BASE, 0xC0000000                  # 3GB
-.set KERNEL_PAGE_NUMBER, (KERNEL_VIRTUAL_BASE >> 22)  # Page directory index of kernel's 4MB PTE.
-
 # Allocate the initial stack.
 .section .bootstrap_stack, "aw", @nobits
 stack_bottom:
