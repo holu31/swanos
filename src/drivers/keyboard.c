@@ -21,13 +21,13 @@ char kb_sctochar(int scancode){     // scancode to char
 		return "123456789"[scancode - 0x2];
 	if(scancode >= 0x10 && scancode <= 0x1C)
 	{
-		return "qwertzuiop"[scancode - 0x10];
+		return "qwertyuiop"[scancode - 0x10];
 	} else if(scancode >= 0x1E && scancode <= 0x26)
 	{
 		return "asdfghjkl"[scancode - 0x1E];
 	} else if(scancode >= 0x2C && scancode <= 0x32)
 	{
-		return "yxcvbnm"[scancode - 0x2C];
+		return "zxcvbnm"[scancode - 0x2C];
 	}
 	return 0;
 }
