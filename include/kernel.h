@@ -4,7 +4,7 @@
 #include <stdint.h>
 #define DEBUG_MODE 1
 #define KERNEL_NAME "SWAN-OS"
-#define KERNEL_VERSION_STRING "0.1.0"
+#define KERNEL_VERSION_STRING "0.1.2"
 #define NULL ((void *)0)
 
 struct regs {
