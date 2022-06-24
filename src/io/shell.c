@@ -19,7 +19,11 @@ char *get_command(){
             log("buffer full\n", false);         // ...temporary until we write a memory manager
             return "";
         }
-        if(kb_sctochar(key) != 0){ 
+        if(kb_sctochar(key) == '\r' && strlen(buffer_shell) != 0){
+            buffer_shell[strlen(buffer_shell)-1] = '\0';
+            cbackspace();
+        }
+        else if(kb_sctochar(key) != 0){ 
             buffer_shell[strlen(buffer_shell)] = kb_sctochar(key);
             cputch(kb_sctochar(key));
         }

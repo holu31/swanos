@@ -69,6 +69,15 @@ void cputint(int i){
     cputs(str);
 }
 
+void cbackspace(){
+    column -= 1;
+    const size_t index = row * 80 + column;
+    buffer[index] = (uint16_t) ' ' | (uint16_t) color << 8;
+    cputch(' ');
+    column -= 1;
+    update_cursor();
+}
+
 void log(char *str, bool ok){
     cputs("[");
     cset_color(COLOR_LIGHT_GREEN, COLOR_BLACK);
