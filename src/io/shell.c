@@ -14,7 +14,7 @@ char *get_command(){
     for(int i=0; i!=sizeof(buffer_shell); i++) buffer_shell[i] = '\0';
     while(kb_sctochar(key) != '\n'){
         if(strlen(buffer_shell) == SIZE_BUFFER){
-            log("buffer full\n", false);
+            log("buffer full\n", false);    // temporary buffer overflow protection until the memory manager appears
             return "";
         }
         if(kb_sctochar(key) != 0){
