@@ -1,0 +1,50 @@
+# SwanOS Buildbot Action
+
+name: SwanOS Buildbot
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Install nasm, grub-pc-bin, xorriso, mtools
+      - name: Install nasm, grub-pc-bin, xorriso, mtools
+        run: sudo apt install nasm grub-pc-bin xorriso mtools
+
+      # Download i686-elf-tools
+      - name: Download i686-elf-tools
+        run: |
+          wget -nv https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
+          sudo unzip i686-elf-tools-linux.zip -d /usr/local
+          rm i686-elf-tools-linux.zip
+
+      # Run build-actions.py
+      - name: Run build-actions.py
+        run: python3 build-actions.py
+
+      # Commit files
+      - name: Commit files
+        run: |
+          git config user.name SwanOS-Buildbot
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Add files from SwanOS Buildbot"
+          git push
