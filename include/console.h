@@ -31,4 +31,5 @@ void cputch(char c);
 void cset_color(uint8_t colfg, uint8_t colbg);
 void cputs(char *c);
 void cputint(int i);
+void cbackspace();
 void log(char *str, bool ok);
