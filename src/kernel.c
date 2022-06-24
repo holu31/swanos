@@ -13,5 +13,4 @@ void kernel_main(){
 	irq_init();
 	isrs_init();
 	shell_init();
-	while(1);
 }
