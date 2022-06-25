@@ -50,8 +50,9 @@ void shell_init(){
     cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
     for(;;){
         char *command = get_command();
-        if(strcmp(command, "")!=0){
-            if(strcmp(command, "help")==0){
+        char *arg = strtok(command, " ");
+        if(strcmp(arg, "")!=0){
+            if(strcmp(arg, "help")==0){
                 cputs("\nhere all commands are output inside in the kernel: \n\n\
               help | all commands are output inside to the kernel\n\
 -------------------|---------------------------------------------\n\
@@ -62,18 +63,18 @@ void shell_init(){
      ver / version | show os version\n\
              lspci | list devices on pci bus\n\
 ");
-            } else if(strcmp(command, "reboot")==0){
+            } else if(strcmp(arg, "reboot")==0){
                 uint8_t good = 0x02;
                 while(good & 0x02) good = inb(0x64);
                 outb(0x64, 0xFE);
                 asm volatile("hlt");
-            } else if(strcmp(command, "shutdown")==0){
+            } else if(strcmp(arg, "shutdown")==0){
                 outw(0xB004, 0x2000);
                 outw(0x604, 0x2000);
                 outw(0x4004, 0x3400);
-            } else if(strcmp(command, "cls")==0 || strcmp(command, "clear")==0){
+            } else if(strcmp(arg, "cls")==0 || strcmp(arg, "clear")==0){
                 cinit();
-            } else if(strcmp(command, "ver")==0 || strcmp(command, "version")==0){
+            } else if(strcmp(arg, "ver")==0 || strcmp(arg, "version")==0){
                 cputs("\n");
                 cputs(KERNEL_NAME);
                 cputs(" ");
@@ -83,12 +84,12 @@ void shell_init(){
                 cputs(" ");
                 cputs(__TIME__);
                 cputs("\n");
-            } else if(strcmp(command, "lspci")==0){
+            } else if(strcmp(arg, "lspci")==0){
                 cputs("\nList of PCI devices:\n");
                 pci_getbuses();
             } else{
                 cputs("\ncommand ");
-                cputs(command);
+                cputs(arg);
                 cputs(" not found");
             }
         }
