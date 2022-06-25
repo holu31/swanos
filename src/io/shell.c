@@ -4,14 +4,17 @@
 #include <ports.h>
 #include <string.h>
 #include <kernel.h>
+#include <pci.h>
 #define SIZE_BUFFER 77
 
 char buffer_shell[SIZE_BUFFER];
 
 char *get_command(){
     int key = kb_getkey();
+    cputs("\n");
+    cputs(KERNEL_NAME);
     cset_color(COLOR_CYAN, COLOR_BLACK);
-    cputs("\n~$ ");
+    cputs(" ~$ ");
     cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
     memset(buffer_shell, 0, SIZE_BUFFER); // clear buffer
     while(kb_sctochar(key) != '\n'){
@@ -35,6 +38,16 @@ char *get_command(){
 }
 
 void shell_init(){
+    cset_color(COLOR_CYAN, COLOR_BLACK);
+    cputs("\n\
+   _____                     ____   _____ \n\
+  / ____|                   / __ \\ / ____|\n\
+ | (_____      ____ _ _ __ | |  | | (___  \n\
+  \\___ \\ \\ /\\ / / _` | '_ \\| |  | |\\___ \\ \n\
+  ____) \\ V  V / (_| | | | | |__| |____) |\n\
+ |_____/ \\_/\\_/ \\__,_|_| |_|\\____/|_____/ \n\
+");
+    cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
     for(;;){
         char *command = get_command();
         if(strcmp(command, "")!=0){
@@ -47,6 +60,7 @@ void shell_init(){
 -------------------|---------------------------------------------\n\
        cls / clear | clear entire screen\n\
      ver / version | show os version\n\
+             lspci | list devices on pci bus\n\
 ");
             } else if(strcmp(command, "reboot")==0){
                 uint8_t good = 0x02;
@@ -64,7 +78,14 @@ void shell_init(){
                 cputs(KERNEL_NAME);
                 cputs(" ");
                 cputs(KERNEL_VERSION_STRING);
+                cputs(" ");
+                cputs(__DATE__);
+                cputs(" ");
+                cputs(__TIME__);
                 cputs("\n");
+            } else if(strcmp(command, "lspci")==0){
+                cputs("\nList of PCI devices:\n");
+                pci_getbuses();
             } else{
                 cputs("\ncommand ");
                 cputs(command);
