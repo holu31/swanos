@@ -50,8 +50,8 @@ void shell_init(){
     cset_color(COLOR_LIGHT_GREY, COLOR_BLACK);
     for(;;){
         char *command = get_command();
-        char *arg = strtok(command, " ");
         if(strcmp(arg, "")!=0){
+            char *arg = strtok(command, " ");
             if(strcmp(arg, "help")==0){
                 cputs("\nhere all commands are output inside in the kernel: \n\n\
               help | all commands are output inside to the kernel\n\
