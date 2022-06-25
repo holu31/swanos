@@ -24,7 +24,6 @@ enum colors {
 size_t row;
 size_t column;
 uint8_t color;
-uint16_t* buffer;
 
 void cinit(void);
 void cputch(char c);

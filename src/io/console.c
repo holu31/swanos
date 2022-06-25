@@ -1,6 +1,10 @@
 #include <console.h>
 #include <ports.h>
 
+
+static uint16_t* buffer;
+
+
 void update_cursor(){
     uint16_t pos = row * 80 + column;
  
@@ -10,9 +14,11 @@ void update_cursor(){
     outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
 }
 
+
 void cset_color(uint8_t colfg, uint8_t colbg){
     color = colfg | colbg << 4;
 }
+
 
 void cinit(void) {
     row = 0;
@@ -27,13 +33,42 @@ void cinit(void) {
     }
 }
 
+
+void terminal_delete_last_line() {
+	int *ptr;
+ 
+	for(int x = 0; x < 80 * 2; x++) {
+		ptr = 0xC03FF000 + (80 * 2) * (25 - 1) + x;
+		*ptr = 0;
+	}
+}
+
+
+void terminal_scroll(uint8_t line) {
+    int *loop;
+	char c;
+ 
+	for(loop = line * (80 * 2) + 0xC03FF000; loop < 80 * 2; loop++) {
+		c = *loop;
+		*(loop - (80 * 2)) = c;
+	}
+}
+
+
 void cputch(char c){
     const size_t index = row * 80 + column;
     if(c != '\n') buffer[index] = (uint16_t) c | (uint16_t) color << 8;
     if (++column == 80 || c == '\n') {
         column = 0;
-        if (++row == 25)
-            row = 0;
+        if (++row >= 25){
+			for(uint8_t line = 1; line <= 25; line++) {
+				terminal_scroll(line);
+			}
+			terminal_scroll(5);
+			terminal_delete_last_line();
+			terminal_delete_last_line();
+			row = 23;
+        }
     }
     update_cursor();
 }
@@ -43,6 +78,7 @@ void cputs(char *c){
     for(int i=0; c[i]!='\0';i++)
         cputch(c[i]);
 }
+
 
 void cputint(int i){
     if(i < 0){
@@ -69,6 +105,7 @@ void cputint(int i){
     cputs(str);
 }
 
+
 void cbackspace(){
     column -= 1;
     const size_t index = row * 80 + column;
@@ -77,6 +114,7 @@ void cbackspace(){
     column -= 1;
     update_cursor();
 }
+
 
 void log(char *str, bool ok){
     cputs("[");
