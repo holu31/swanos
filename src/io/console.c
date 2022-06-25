@@ -34,24 +34,20 @@ void cinit(void) {
 }
 
 
-void terminal_delete_last_line() {
-	int *ptr;
- 
-	for(int x = 0; x < 80 * 2; x++) {
-		ptr = 0xC03FF000 + (80 * 2) * (25 - 1) + x;
-		*ptr = 0;
-	}
-}
-
-
-void terminal_scroll(uint8_t line) {
-    int *loop;
-	char c;
- 
-	for(loop = line * (80 * 2) + 0xC03FF000; loop < 80 * 2; loop++) {
-		c = *loop;
-		*(loop - (80 * 2)) = c;
-	}
+void video_scroll() {
+    if (row > 24){
+        for (int i = 0*80; i < 24*80; i++) {
+            buffer[i] = buffer[i + 80];
+        }
+        // The last line should now be blank. Do this by writing
+        // 80 spaces to it.
+        for (int i = 24 * 80; i < 25 * 80; i++) {
+            buffer[i] = (uint16_t) ' ' | (uint16_t) color << 8;
+        }
+        // The cursor should now be on the last line.
+        row = 24;
+    }
+    update_cursor();
 }
 
 
@@ -61,13 +57,7 @@ void cputch(char c){
     if (++column == 80 || c == '\n') {
         column = 0;
         if (++row >= 25){
-			for(uint8_t line = 1; line <= 25; line++) {
-				terminal_scroll(line);
-			}
-			terminal_scroll(5);
-			terminal_delete_last_line();
-			terminal_delete_last_line();
-			row = 23;
+			video_scroll();
         }
     }
     update_cursor();
