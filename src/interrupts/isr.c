@@ -100,7 +100,9 @@ void fault_handler(struct regs *r){
 	if (handler) {
 		handler(r);
 	} else {
-        if(DEBUG_MODE) log("error isr", false);
+        if(DEBUG_MODE) log("error isr ", false);
+		cputint(r->int_no);
+		asm("hlt");
 	}
 	__asm__ __volatile__ ("sti");
 }
