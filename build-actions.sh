@@ -21,6 +21,6 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/shell.c -o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o bin/kernel.o
 
 i686-elf-as src/kernel_entry.s -o bin/kernel_entry.o
-i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf "$OBJECTS"
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf $OBJECTS
 
 grub-mkrescue -o "swanos-0.1.2.iso" build/ -V SwanOS
