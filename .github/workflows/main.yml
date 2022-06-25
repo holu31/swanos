@@ -36,9 +36,9 @@ jobs:
           sudo unzip i686-elf-tools-linux.zip -d /usr/local
           rm i686-elf-tools-linux.zip
 
-      # Run build-actions.py
+      # Run ./build-actions.sh
       - name: Run build-actions.py
-        run: python3 build-actions.py
+        run: ./build-actions.py
 
       # Commit files
       - name: Commit files
