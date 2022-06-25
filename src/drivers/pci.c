@@ -130,9 +130,3 @@ void pci_getbuses(){
         }
     }
 }
-
-void pci_init(){
-    log("PCI init\n", true);
-    cputs("PCI devices:\n");
-    pci_getbuses();
-}
