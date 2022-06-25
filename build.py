@@ -25,8 +25,8 @@ os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/ke
 os.system('i686-elf-as src/kernel_entry.s -o bin/kernel_entry.o')
 os.system('i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf {}'.format(OBJECTS))
 if sys.platform == "linux" or sys.platform == "linux2":
-    os.system("""grub-mkrescue -o "swanos-0.1.2.iso" build/ -V SwanOS""")
+    os.system("""grub-mkrescue -o "swanos-latest.iso" build/ -V SwanOS""")
 else:
-    os.system("""wsl grub-mkrescue -o "swanos-0.1.2.iso" build/ -V SwanOS""")
+    os.system("""wsl grub-mkrescue -o "swanos-latest.iso" build/ -V SwanOS""")
 
-os.system("qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-0.1.2.iso -serial file:Qemu.log")
+os.system("qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log")
