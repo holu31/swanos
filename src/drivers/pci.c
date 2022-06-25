@@ -104,7 +104,7 @@ void pci_getbuses(){
 						cputs("RTL8139 Ethernet\n");
 						break;
 					case 0x1300:
-						сputs("0x1300 | ");
+						cputs("0x1300 | ");
 						cputs("RTL8139 Ethernet\n");
 						break;
 				}
@@ -122,7 +122,7 @@ void pci_getbuses(){
 						cputs("Silicon Integrated Systems [SiS]\n");
 						break;
 					case 0x0B05:
-						сputs("0x0B05 | ");
+						cputs("0x0B05 | ");
 						cputs("ASUSTek Computer, Inc.\n");
 						break;
 				}
