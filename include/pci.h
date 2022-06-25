@@ -3,6 +3,6 @@
 #define PCI_H
 #include <stdint.h>
 
-void pci_init();
+void pci_getbuses();
 
 #endif
