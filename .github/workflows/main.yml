@@ -37,8 +37,8 @@ jobs:
           rm i686-elf-tools-linux.zip
 
       # Run ./build-actions.sh
-      - name: Run build-actions.py
-        run: ./build-actions.py
+      - name: Run ./build-actions.sh
+        run: ./build-actions.sh
 
       # Commit files
       - name: Commit files
