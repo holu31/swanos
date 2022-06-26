@@ -40,6 +40,6 @@ xorriso -as mkisofs -b limine-cd.bin \
 
 ./limine/limine-deploy swanos-latest.iso
 
-if [[ "$1" == "run" ]]; then
+if [ "$1" == "run" ]; then
   qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log
 fi
