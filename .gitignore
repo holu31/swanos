@@ -1,3 +1,6 @@
 .DS_Store
 Qemu.log
 bin/*.o
+limine/
+iso_root/
+build/boot/kernel.elf
