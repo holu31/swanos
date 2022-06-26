@@ -24,7 +24,9 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o b
 i686-elf-as src/kernel_entry.s -o bin/kernel_entry.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf $OBJECTS
 
-git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+if [ ! -d "limine" ]; then
+  git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+fi
 make -C limine
 mkdir -p iso_root
 cp -v build/boot/kernel.elf limine.cfg limine/limine.sys \
