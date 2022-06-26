@@ -5,7 +5,6 @@
 #include <isr.h>
 #include <kernel.h>
 #include <shell.h>
-#include <kheap.h>
 
 void kernel_main(){
 	cinit();
@@ -13,6 +12,5 @@ void kernel_main(){
 	idt_init();
 	irq_init();
 	isrs_init();
-	kheap_init();
 	shell_init();
 }
