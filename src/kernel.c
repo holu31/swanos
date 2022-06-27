@@ -7,6 +7,7 @@
 #include <shell.h>
 #include <pmm.h>
 #include <vmm.h>
+#include <kheap.h>
 
 void kernel_main(struct multiboot_info *mboot_info){
 	cinit();
@@ -15,6 +16,7 @@ void kernel_main(struct multiboot_info *mboot_info){
 	irq_init();
 	isrs_init();
 	pmm_init(mboot_info);
-	// vmm_init();
+	vmm_init();
+	kheap_init();
 	shell_init();
 }

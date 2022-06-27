@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/pmm.o bin/vmm.o bin/paging.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o"
+OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/pmm.o bin/kheap.o bin/vmm.o bin/paging.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o"
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/ports.c -o bin/ports.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/console.c -o bin/console.o
@@ -21,6 +21,7 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/shell.c -o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/mem/pmm.c -o bin/pmm.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/mem/vmm.c -o bin/vmm.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/mem/kheap.c -o bin/kheap.o
 i686-elf-as src/mem/paging.s -o bin/paging.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o bin/kernel.o
