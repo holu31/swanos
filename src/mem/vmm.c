@@ -1,3 +1,8 @@
+/*
+    Taken from https://github.com/rgimad/EOS/tree/d3e2062fc909d8b15d8637950050281f051270d2
+    under license MIT license
+*/
+
 #include <vmm.h>
 #include <console.h>
 #include <string.h>
