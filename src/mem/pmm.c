@@ -14,36 +14,35 @@ uint32_t kernel_phys_map_end;
 
 uint64_t phys_installed_memory_size = 0, phys_available_memory_size = 0;
 
-// Для рамдиска
 uint64_t initrd_mmap_entry_addr = -1;
 uint32_t mmap_avail_entries_count = 0;
 multiboot_memory_map_entry mmap_avail_entries_array[100];
 
 
-inline static void bitmap_set(int32_t bit) {
+inline static void bitmap_set(int32_t bit){
     phys_memory_bitmap[bit / 32] |= (1 << (bit % 32));
 }
 
 
-inline static void bitmap_unset(int32_t bit) {
+inline static void bitmap_unset(int32_t bit){
     phys_memory_bitmap[bit / 32] &= ~(1 << (bit % 32));
 }
 
 
-inline static bool bitmap_test(int32_t bit) {
+inline static bool bitmap_test(int32_t bit){
     return phys_memory_bitmap[bit / 32] & (1 << (bit % 32));
 }
 
 
-void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length) {
+void pmm_parse_memory_map(multiboot_memory_map_entry *mmap_addr, uint32_t length){
     multiboot_memory_map_entry *mentry = 0;	
 
-    int32_t n = length / sizeof(multiboot_memory_map_entry); // Количество записей в структуре карты памяти
+    int32_t n = length / sizeof(multiboot_memory_map_entry); // number of entries in the memory map structure
 
-    mentry = mmap_addr;                                      // Указатель на карту памяти
+    mentry = mmap_addr;                                      // pointer to memory card
 
-    for (int32_t i = 0; i < n; i++) {
-        if ((mentry + i)->type == 1) {
+    for(int32_t i = 0; i < n; i++){
+        if((mentry + i)->type == 1){
             phys_available_memory_size += (mentry + i)->len;
         }
         phys_installed_memory_size += (mentry + i)->len;
@@ -66,21 +65,21 @@ int32_t pmm_find_free_block(){
     return -1;
 }
 
-int32_t pmm_find_free_blocks(uint32_t count) {
+int32_t pmm_find_free_blocks(uint32_t count){
     int32_t starting_block = -1;
     int32_t starting_block_bit = -1;
     uint32_t cur_block_num = 0;
 
-    for (uint32_t i = 0; i < phys_block_count / 32; i++) {
+    for(uint32_t i = 0; i < phys_block_count / 32; i++){
         uint32_t cur_block = phys_memory_bitmap[i];
-        if (cur_block == 0xFFFFFFFF) {
+        if(cur_block == 0xFFFFFFFF){
             cur_block_num = 0;
             continue;
         }
 
-        for (uint8_t j = 0; j < 32; j++) {
+        for(uint8_t j = 0; j < 32; j++){
             int32_t bit = 1 << j;
-            if (bit & cur_block) { // Бит установлен
+            if (bit & cur_block) { // bit set
                 cur_block_num = 0;
                 continue;
             }
@@ -101,8 +100,8 @@ int32_t pmm_find_free_blocks(uint32_t count) {
     return -1;
 }
 
-// Функции для управления одним блоком в памяти
-physical_addr pmm_alloc_block() {
+// functions for block management in memory
+physical_addr pmm_alloc_block(){
     if (phys_block_count - phys_used_block_count <= 0) {
         return 0xFFFFFFFF;
     }
@@ -120,7 +119,7 @@ physical_addr pmm_alloc_block() {
 }
 
 
-void pmm_free_block(physical_addr addr) {
+void pmm_free_block(physical_addr addr){
     int32_t block = addr / PHYS_BLOCK_SIZE;
 
     bitmap_unset(block);
@@ -128,7 +127,7 @@ void pmm_free_block(physical_addr addr) {
 }
 
 
-bool pmm_is_block_alloced(physical_addr addr) {
+bool pmm_is_block_alloced(physical_addr addr){
     int32_t block = addr / PHYS_BLOCK_SIZE;
 
     return bitmap_test(block);
@@ -168,7 +167,7 @@ void pmm_free_blocks(physical_addr addr, uint32_t count) {
 
 
 // Внутренние функции для выделения диапазонов памяти
-void pmm_alloc_chunk(uint64_t base_addr, uint64_t length) {
+void pmm_alloc_chunk(uint64_t base_addr, uint64_t length){
     int32_t cur_block_addr = base_addr / PHYS_BLOCK_SIZE;
     int32_t num_blocks = length / PHYS_BLOCK_SIZE;
 
@@ -179,7 +178,7 @@ void pmm_alloc_chunk(uint64_t base_addr, uint64_t length) {
 }
 
 
-void pmm_free_chunk(uint64_t base_addr, uint64_t length) {
+void pmm_free_chunk(uint64_t base_addr, uint64_t length){
     int32_t cur_block_addr = base_addr / PHYS_BLOCK_SIZE;
     int32_t num_blocks = length / PHYS_BLOCK_SIZE;
 
@@ -248,22 +247,21 @@ void pmm_relocate_initrd_to_high_mem(struct multiboot_info *mb){
 
 void pmm_init(struct multiboot_info *mboot_info){
     multiboot_memory_map_entry *mmap = (multiboot_memory_map_entry*) mboot_info->mmap_addr;
-    pmm_parse_memory_map(mmap, mboot_info->mmap_length);                        // Он также вычисляет phys_installed_memory_size
+    pmm_parse_memory_map(mmap, mboot_info->mmap_length);                       
 
     pmm_relocate_initrd_to_high_mem(mboot_info);
 
-    phys_block_count = (phys_installed_memory_size) / PHYS_BLOCK_SIZE;          // Сколько блоков будет
-    phys_used_block_count = phys_block_count;                                   // Изначально используются все блоки
-    phys_memory_bitmap = (uint32_t*) KERNEL_END_PADDR;                          // Битовая карта физической памяти начинается после ядра
-    memset(phys_memory_bitmap, 0xFF, phys_block_count / PHYS_BLOCKS_PER_BYTE);  // Изначально помечаем всю установленную память как используемую
-    pmm_free_available_memory(mboot_info);                                      // Освобождает память, которую GRUB считает доступной
-    pmm_alloc_chunk(KERNEL_START_PADDR, KERNEL_SIZE);                           // Из освобожденной памяти нам нужно выделить те, которые используются ядром
+    phys_block_count = (phys_installed_memory_size) / PHYS_BLOCK_SIZE;        
+    phys_used_block_count = phys_block_count;                                  
+    phys_memory_bitmap = (uint32_t*) KERNEL_END_PADDR;                         
+    memset(phys_memory_bitmap, 0xFF, phys_block_count / PHYS_BLOCKS_PER_BYTE);
+    pmm_free_available_memory(mboot_info);                                  
+    pmm_alloc_chunk(KERNEL_START_PADDR, KERNEL_SIZE);                           
     
-    pmm_alloc_chunk((uint64_t)(intptr_t)phys_memory_bitmap, phys_block_count);  // Нам также необходимо выделить память, используемую самой физической картой.
+    pmm_alloc_chunk((uint64_t)(intptr_t)phys_memory_bitmap, phys_block_count);
     kernel_phys_map_start = (uint32_t) phys_memory_bitmap;
     kernel_phys_map_end = kernel_phys_map_start + (phys_block_count / PHYS_BLOCKS_PER_BYTE);
     if(DEBUG_MODE) log("PMM init", true);
-    qemu_puts("PMM init");
 }
 
 
