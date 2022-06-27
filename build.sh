@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
-OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o"
+OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/pmm.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o"
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/ports.c -o bin/ports.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/console.c -o bin/console.o
@@ -18,6 +18,8 @@ nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/pci.c -o bin/pci.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/keyboard.c -o bin/keyboard.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/shell.c -o bin/shell.o
+
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/mem/pmm.c -o bin/pmm.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o bin/kernel.o
 
