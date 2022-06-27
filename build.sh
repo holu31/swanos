@@ -29,22 +29,26 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/kernel.c -o b
 i686-elf-as src/kernel_entry.s -o bin/kernel_entry.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf $OBJECTS
 
-if [ ! -d "limine" ]; then
-  git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+if [ "$1" == "grub" ]; then
+  grub2-mkrescue -o "swanos-latest.iso" build/ -V SwanOS
+else
+  if [ ! -d "limine" ]; then
+    git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
+  fi
+  make -C limine
+  mkdir -p iso_root
+  cp -v build/boot/kernel.elf limine.cfg limine/limine.sys \
+        limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+
+  xorriso -as mkisofs -b limine-cd.bin \
+          -no-emul-boot -boot-load-size 4 -boot-info-table \
+          --efi-boot limine-cd-efi.bin \
+          -efi-boot-part --efi-boot-image --protective-msdos-label \
+          iso_root -o swanos-latest.iso
+
+  ./limine/limine-deploy swanos-latest.iso
 fi
-make -C limine
-mkdir -p iso_root
-cp -v build/boot/kernel.elf limine.cfg limine/limine.sys \
-      limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
 
-xorriso -as mkisofs -b limine-cd.bin \
-        -no-emul-boot -boot-load-size 4 -boot-info-table \
-        --efi-boot limine-cd-efi.bin \
-        -efi-boot-part --efi-boot-image --protective-msdos-label \
-        iso_root -o swanos-latest.iso
-
-./limine/limine-deploy swanos-latest.iso
-
-if [ "$1" == "run" ]; then
+if [ "$1" == "run" ] || [ "$2" == "run" ]; then
   qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log
 fi
