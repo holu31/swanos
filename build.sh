@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o"
+OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o bin/pcspkr.o"
 
 if [ ! -x "$(command -v i686-elf-gcc)" ]; then
   echo "ERROR: i686-elf-tools not installed!"
@@ -29,6 +29,7 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/interrupts/is
 nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/pci.c -o bin/pci.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/pcspkr.c -o bin/pcspkr.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/keyboard.c -o bin/keyboard.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/shell.c -o bin/shell.o
 
@@ -66,7 +67,7 @@ fi
 
 if [ "$1" == "run" ] || [ "$2" == "run" ]; then
   if [ -x "$(command -v qemu-system-i386)" ]; then
-    qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log
+    qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log -soundhw pcspk
   else
     echo "ERROR: qemu not installed!"
     exit

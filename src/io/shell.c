@@ -62,6 +62,7 @@ void shell_init(){
        cls / clear | clear entire screen\n\
      ver / version | show os version\n\
              lspci | list devices on pci bus\n\
+              beep | beep with pc speaker\n\
 ");
             } else if(strcmp(arg, "reboot")==0){
                 uint8_t good = 0x02;
@@ -87,6 +88,8 @@ void shell_init(){
             } else if(strcmp(arg, "lspci")==0){
                 cputs("\nList of PCI devices:\n");
                 pci_getbuses();
+            } else if(strcmp(arg, "beep")==0){
+                beep(1000, 200);
             } else{
                 cputs("\ncommand ");
                 cputs(arg);

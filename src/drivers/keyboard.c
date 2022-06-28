@@ -17,8 +17,8 @@ char kb_sctochar(int scancode){     // scancode to char
 	if(scancode == 0xB4) return '.';
 	if(scancode == 0xB5) return '/';
 	if(scancode == 0x29) return '0';
-	if(scancode >= 0x2 && scancode <= 0xA)
-		return "123456789"[scancode - 0x2];
+	if(scancode >= 0x2 && scancode <= 0xB)
+		return "1234567890"[scancode - 0x2];
 	if(scancode >= 0x10 && scancode <= 0x1C)
 	{
 		return "qwertyuiop"[scancode - 0x10];
