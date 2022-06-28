@@ -2,6 +2,19 @@
 set -e
 OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o"
 
+if [ ! -x "$(command -v i686-elf-gcc)" ]; then
+  echo "ERROR: i686-elf-tools not installed!"
+  exit
+fi
+if [ ! -x "$(command -v nasm)" ]; then
+  echo "ERROR: nasm not installed!"
+  exit
+fi
+if [ ! -x "$(command -v git)" ]; then
+  echo "ERROR: git not installed!"
+  exit
+fi
+
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/ports.c -o bin/ports.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/console.c -o bin/console.o
 
@@ -25,7 +38,14 @@ i686-elf-as src/kernel_entry.s -o bin/kernel_entry.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -nostdlib -lgcc -T link.ld -o build/boot/kernel.elf $OBJECTS
 
 if [ "$1" == "grub" ]; then
-  grub2-mkrescue -o "swanos-latest.iso" build/ -V SwanOS
+  if [ -x "$(command -v grub-mkrescue)" ]; then
+    grub2-mkrescue -o "swanos-latest.iso" build/ -V SwanOS
+  elif [ -x "$(command -v grub2-mkrescue)" ]; then
+    grub2-mkrescue -o "swanos-latest.iso" build/ -V SwanOS
+  else
+    echo "ERROR: grub not installed!"
+    exit
+  fi
 else
   if [ ! -d "limine" ]; then
     git clone https://github.com/limine-bootloader/limine.git --branch=v3.0-branch-binary --depth=1
@@ -45,5 +65,10 @@ else
 fi
 
 if [ "$1" == "run" ] || [ "$2" == "run" ]; then
-  qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log
+  if [ -x "$(command -v qemu-system-i386)" ]; then
+    qemu-system-i386 -m 16 -name SwanOS -cdrom swanos-latest.iso -serial file:Qemu.log
+  else
+    echo "ERROR: qemu not installed!"
+    exit
+  fi
 fi
