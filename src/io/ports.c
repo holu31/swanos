@@ -39,3 +39,13 @@ inline uint64_t rdtsc(){
 inline void insl(unsigned short port, unsigned int buffer, unsigned long count){
 	asm("cld; rep; insl" :: "D" (buffer), "d" (port), "c" (count));
 }
+
+void io_wait(void) {
+    outb(0x80, 0);
+}
+
+void sleep(int32_t i) {
+    for (int32_t j = i * 1000; j != 0; j--){
+        io_wait();
+    }
+}
