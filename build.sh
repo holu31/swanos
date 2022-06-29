@@ -28,10 +28,10 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/interrupts/ir
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/interrupts/isr.c -o bin/isr.o
 nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o
 
-i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/pci.c -o bin/pci.o
-i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/pcspkr.c -o bin/pcspkr.o
-i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/drivers/keyboard.c -o bin/keyboard.o
-i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O0 -c src/io/shell.c -o bin/shell.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pci.c -o bin/pci.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pcspkr.c -o bin/pcspkr.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/keyboard.c -o bin/keyboard.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/shell.c -o bin/shell.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/kernel.c -o bin/kernel.o
 
