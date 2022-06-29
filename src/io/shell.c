@@ -6,6 +6,8 @@
 #include <kernel.h>
 #include <pci.h>
 #include <pcspkr.h>
+#include <stdlib.h>
+#include <cmos.h>
 
 #define SIZE_BUFFER 77
 
@@ -65,6 +67,7 @@ void shell_init(){
      ver / version | show os version\n\
              lspci | list devices on pci bus\n\
               beep | beep with pc speaker\n\
+       time / date | current date and time\n\
 ");
             } else if(strcmp(arg, "reboot")==0){
                 uint8_t good = 0x02;
@@ -92,6 +95,56 @@ void shell_init(){
                 pci_getbuses();
             } else if(strcmp(arg, "beep")==0){
                 beep(1000, 200);
+            } else if(strcmp(arg, "time")==0 || strcmp(arg, "date")==0){
+                char c_second[32];
+                char c_minute[32];
+                char c_hour[32];
+                char c_day[32];
+                char c_year[32];
+
+                char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+                int32_t second = cmos_get_second();
+                int32_t minute = cmos_get_minute();
+                int32_t hour = cmos_get_hour();
+                int32_t day = cmos_get_day();
+                int32_t month = cmos_get_month();
+                int32_t year = cmos_get_year();
+
+                itoa(second, c_second);
+                itoa(minute, c_minute);
+                itoa(hour, c_hour);
+                itoa(day, c_day);
+                itoa(year, c_year);
+
+                cputs("\n\n   Current time: ");
+
+                if (hour < 10) {
+                    cputs("0");
+                }
+                cputs(c_hour);
+                cputs(":");
+                if (minute < 10) {
+                    cputs("0");
+                }
+                cputs(c_minute);
+                cputs(":");
+                if (second < 10) {
+                    cputs("0");
+                }
+                cputs(c_second);
+
+                cputs("\n   Current date: ");
+
+                if (day < 10) {
+                    cputs("0");
+                }
+                cputs(c_day);
+                cputs(" ");
+                cputs(months[month - 1]);
+                cputs(" ");
+                cputs(c_year);
+                cputs("\n");
             } else{
                 cputs("\ncommand ");
                 cputs(arg);

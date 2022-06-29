@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o bin/pcspkr.o"
+OBJECTS="bin/kernel.o bin/kernel_entry.o bin/console.o bin/ports.o bin/string.o bin/gdt.o bin/idt.o bin/interrupts.o bin/pci.o bin/isr.o bin/irq.o bin/keyboard.o bin/shell.o bin/description_tables.o bin/pcspkr.o bin/stdlib.o bin/cmos.o"
 
 if [ ! -x "$(command -v i686-elf-gcc)" ]; then
   echo "ERROR: i686-elf-tools not installed!"
@@ -19,6 +19,7 @@ i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/ports.c -o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/console.c -o bin/console.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/libc/string.c -o bin/string.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/libc/stdlib.c -o bin/stdlib.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/arch/x86/gdt.c -o bin/gdt.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/arch/x86/idt.c -o bin/idt.o
@@ -30,6 +31,7 @@ nasm src/interrupts/interrupts.asm -f elf32 -O0 -o bin/interrupts.o
 
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pci.c -o bin/pci.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/pcspkr.c -o bin/pcspkr.o
+i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/cmos.c -o bin/cmos.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/drivers/keyboard.c -o bin/keyboard.o
 i686-elf-gcc -g -I include -ffreestanding -Wall -Wextra -O2 -c src/io/shell.c -o bin/shell.o
 
