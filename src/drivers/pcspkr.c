@@ -1,7 +1,8 @@
 #include <kernel.h>
 #include <ports.h>
+#include <pcspkr.h>
 
-static void play_sound(uint32_t nFrequence) {
+static void play_sound(uint32_t nFrequence){
 	uint32_t Div;
 	uint8_t tmp;
 
@@ -16,13 +17,13 @@ static void play_sound(uint32_t nFrequence) {
 	}
 }
 
-static void nosound() {
+static void nosound(){
 	uint8_t tmp = inb(0x61) & 0xFC;
 
 	outb(0x61, tmp);
 }
 
-void beep(uint32_t freq, uint32_t dura) {
+void beep(uint32_t freq, uint32_t dura){
 	play_sound(freq);
 	sleep(dura);
 	nosound();

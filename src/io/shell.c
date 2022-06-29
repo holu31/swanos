@@ -5,6 +5,8 @@
 #include <string.h>
 #include <kernel.h>
 #include <pci.h>
+#include <pcspkr.h>
+
 #define SIZE_BUFFER 77
 
 char buffer_shell[SIZE_BUFFER];

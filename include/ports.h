@@ -14,7 +14,7 @@ void outl(uint16_t port, uint32_t val);//write a dword into port
 uint64_t rdtsc();//get the the number of cycles since cpu reset
 void insl(unsigned short port, unsigned int buffer, unsigned long count);//read <count> unsignedint's(=dword?) from <port> to <buffer>
 
-int com1_is_transmit_empty();
-void com1_write_char(char a);
+void io_wait(void);
+void sleep(int32_t i);
 
 #endif
