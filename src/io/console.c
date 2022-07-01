@@ -1,5 +1,6 @@
 #include <console.h>
 #include <ports.h>
+#include <stdarg.h> 
 
 
 static uint16_t* buffer;
@@ -118,3 +119,34 @@ void log(char *str, bool ok){
     cputs("] ");
     cputs(str);
 }
+
+void cprintf(char* format, ...){ 
+    char *traverse; 
+    unsigned int i; 
+    char *s; 
+
+    va_list arg; 
+    va_start(arg, format); 
+    for(traverse = format; *traverse != '\0'; traverse++){ 
+        while(*traverse != '%'){ 
+            cputch(*traverse);
+            traverse++; 
+        } 
+        traverse++; 
+        switch(*traverse) { 
+            case 'c':
+                i = va_arg(arg, int);
+                cputch(i);
+                break; 
+            case 'd':
+                i = va_arg(arg, int);
+                cputint(i);
+                break; 
+            case 's':
+                s = va_arg(arg, char*);
+                cputs(s); 
+                break; 
+        }   
+    } 
+    va_end(arg); 
+} 

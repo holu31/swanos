@@ -55,7 +55,7 @@ void shell_init(){
         char *arg = strtok(command, " ");
         if(strcmp(command, "")!=0){
             if(strcmp(arg, "help")==0){
-                cputs("\nhere all commands are output inside in the kernel: \n\n\
+                cprintf("\nhere all commands are output inside in the kernel: \n\n\
               help | all commands are output inside to the kernel\n\
 -------------------|---------------------------------------------\n\
             reboot | reboot the computer\n\
@@ -78,15 +78,7 @@ void shell_init(){
             } else if(strcmp(arg, "cls")==0 || strcmp(arg, "clear")==0){
                 cinit();
             } else if(strcmp(arg, "ver")==0 || strcmp(arg, "version")==0){
-                cputs("\n");
-                cputs(KERNEL_NAME);
-                cputs(" ");
-                cputs(KERNEL_VERSION_STRING);
-                cputs(" ");
-                cputs(__DATE__);
-                cputs(" ");
-                cputs(__TIME__);
-                cputs("\n");
+                cprintf("\n%s %s %s %s", KERNEL_NAME, KERNEL_VERSION_STRING, __DATE__, __TIME__);
             } else if(strcmp(arg, "lspci")==0){
                 cputs("\nList of PCI devices:\n");
                 pci_getbuses();

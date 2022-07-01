@@ -32,3 +32,4 @@ void cputs(char *c);
 void cputint(int i);
 void cbackspace();
 void log(char *str, bool ok);
+void cprintf(char* format, ...);
