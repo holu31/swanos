@@ -1,5 +1,5 @@
 # About the project
-SwanOS - open and free x86 operating system written in C and GAS in the development of which everyone can participate.
+SwanOS — открытая и бесплатная операционная система x86, написанная на C и GAS, в разработке которой может принять участие каждый.
 
 ## Contact Us
 - https://vk.com/swanos
